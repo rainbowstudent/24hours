@@ -13,7 +13,7 @@ from pyrogram.errors import FloodWait, UserIsBlocked, InputUserDeactivated
 from bot import Bot
 from config import ADMINS, FORCE_MSG, START_MSG, CUSTOM_CAPTION, DISABLE_CHANNEL_BUTTON, PROTECT_CONTENT
 from helper_func import subscribed, encode, decode, get_messages
-from database.database import add_user, del_user, database, full_userbase, present_user
+from database.database import add_user, del_user, collection, full_userbase, present_user
 
 
 async def _human_time_duration(seconds):
@@ -80,7 +80,7 @@ async def start_command(client: Bot, message: Message):
 
     uid = message.from_user.id
     if uid not in ADMINS:
-        result = database.find_one({"user_id": uid})
+        result = collection.find_one({"user_id": uid})
         if result is None:
             temp_msg = await message.reply("Please wait...")
             ad_code = str_to_b64(f"{uid}:{str(get_current_time() + 72000)}")
